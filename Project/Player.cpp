@@ -66,13 +66,13 @@ void CPlayer::Update(void) {
 	float RotSpeed = MOF_ToRadian(10);
 	if (Roll == 0)
 	{
-		RotSpeed = min(ads(m_RotZ) * 0.1f, RotSpeed);
+		RotSpeed = min(abs(m_RotZ) * 0.1f, RotSpeed);
 	}
-	if (ads(m_RotZ)) <= RotSpeed || signbit(m_RotZ) != signbit(Roll))
+	if (abs(m_RotZ) <= RotSpeed || signbit(m_RotZ) != signbit(Roll))
 	{
 		m_RotZ += Roll;
 	}
-	m_ROtZ -= copysignf(min(RotSpeed, abs(m_RotZ)), m_RotZ);
+	m_RotZ -= copysignf(min(RotSpeed, abs(m_RotZ)), m_RotZ);
 
 }
 
@@ -84,6 +84,8 @@ void CPlayer::Render(void){
 	CMatrix44 matworld; 
 	matworld.RotationZ(m_RotZ);    //回転行列を求める
 	matworld.SetTranslation(m_Pos);    //作成した回転行列の移動成分に座標をセット
+	//メッシュの描画
+	m_Mesh.Render(matworld);
 }
 
 /**
